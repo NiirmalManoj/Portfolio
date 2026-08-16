@@ -91,60 +91,143 @@
 
 /* Mobile */
 @media (max-width: 768px) {
+  /* Prevent horizontal overflow completely */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
   .grid-row {
     grid-template-columns: 1fr !important;
+    gap: 20px;
   }
   
   .complex-row {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  #animation-canvas {
+    height: 100svh !important;
+  }
+
+  .nb-hero-top {
+    min-height: 100svh;
+  }
+
+  /* Hero fixes */
+  .nb-hero-left {
+    padding: 100px 16px 30px 16px;
+    box-sizing: border-box;
+    min-height: 100svh;
+    justify-content: space-evenly;
   }
   
-  .footer {
+  .nb-title {
+    font-size: clamp(38px, 13vw, 80px);
+    line-height: 0.95;
+    margin-bottom: 20px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .nb-tagline {
+    max-width: 100%;
+    padding: 10px 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .top-header {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .top-header div {
+    font-size: 9px;
+    margin-bottom: 0;
+  }
+  
+  /* About section */
+  .nb-about-section {
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+
+  /* Do-item layout */
+  .do-item {
     flex-direction: column;
-    gap: 30px;
+    text-align: center;
+    align-items: center;
+    padding: 15px;
+  }
+  
+  .do-icon {
+    margin-bottom: 12px;
+  }
+
+  /* Technical skills specifically: 2 columns where possible */
+  .exp-skills-grid article:nth-child(2) .do-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+  }
+  
+  .skill-tags {
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  /* Tools Grid: clean responsive 2-column layout */
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .tool-cell {
+    padding: 20px 10px;
+  }
+  
+  /* Project cards */
+  .project-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
   }
   
   .project-body {
     flex-direction: column;
     text-align: center;
-  }
-  
-  .project-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    padding: 15px;
+    box-sizing: border-box;
   }
   
   .project-icon-wrapper {
-    margin: 0 auto 20px auto;
+    margin: 0 auto 15px auto;
+  }
+
+  .project-card-image {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 10px;
   }
   
-  .nb-hero-left {
-    padding: 140px 20px 40px 20px;
+  .project-tags {
+    padding: 0 15px 20px;
+    justify-content: center;
   }
   
-  .nb-title {
-    font-size: 15vw;
-    line-height: 1.1;
-  }
-  
-  .nb-about-section {
-    padding: 50px 20px;
-  }
-  
-  .do-item {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-  
-  .do-icon {
-    margin-bottom: 15px;
-  }
-  
+  /* Buttons */
   .nb-cta-row {
     flex-direction: column;
     width: 100%;
+    align-items: stretch;
   }
   
   .nb-cta-btn {
@@ -154,33 +237,60 @@
     justify-content: center;
   }
   
-  .contact-grid {
-    grid-template-columns: 1fr;
+  /* Footer & Contact */
+  .footer {
+    flex-direction: column;
+    gap: 30px;
+    padding: 40px 20px;
+    text-align: center;
+    box-sizing: border-box;
   }
   
-  .top-header div {
-    font-size: 10px;
-    margin-bottom: 5px;
-  }
   .footer > div:nth-child(2) {
     flex-direction: column !important;
-    gap: 30px !important;
+    gap: 20px !important;
+    align-items: center;
+  }
+
+  .footer-socials {
+    align-items: center;
+  }
+
+  .socials {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .contact-info {
+    text-align: center;
   }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
   .nb-title {
-    font-size: 18vw;
+    font-size: clamp(34px, 15vw, 48px);
+  }
+  
+  .nb-tagline {
+    font-size: 10px;
+    letter-spacing: 1px;
   }
   
   .top-header {
-    font-size: 9px;
-    gap: 10px;
+    font-size: 8px;
+    gap: 6px;
   }
   
-  .nb-skills-tags span {
-    font-size: 10px;
-    padding: 6px 12px;
+  .nb-skills-tags span,
+  .skill-tags span {
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+  
+  .exp-skills-grid article:nth-child(2) .do-list {
+    /* If extremely narrow, let it naturally fall to 1 column or tight 2 columns */
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
