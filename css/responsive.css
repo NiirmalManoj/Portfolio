@@ -110,6 +110,12 @@
 
   #animation-canvas {
     height: 100svh !important;
+    /* Base mobile alignment: scale slightly to prevent edge revealing when shifted */
+    transform: scale(1.15) translateY(5vh);
+  }
+  
+  .content-wrapper {
+    margin-top: 0;
   }
 
   .nb-hero-top {
@@ -186,7 +192,7 @@
   
   /* Tools Grid: clean responsive 2-column layout */
   .tools-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .tool-cell {
@@ -240,15 +246,15 @@
   /* Footer & Contact */
   .footer {
     flex-direction: column;
-    gap: 30px;
-    padding: 40px 20px;
+    gap: 15px;
+    padding: 20px 16px;
     text-align: center;
     box-sizing: border-box;
   }
   
   .footer > div:nth-child(2) {
-    flex-direction: column !important;
-    gap: 20px !important;
+    flex-direction: column;
+    gap: 15px;
     align-items: center;
   }
 
