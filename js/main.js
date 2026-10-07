@@ -31,14 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // CSS selector SyntaxError when the fragment begins with a digit or
   // contains special characters (e.g. #1project).
   if (window.location.hash) {
+    const hashId = window.location.hash.slice(1);
+
+    // Clean up the URL so subsequent refreshes don't jump back here
+    history.replaceState(null, '', window.location.pathname + window.location.search);
 
     /**
-     * Strips the leading '#', resolves the target element by ID,
-     * and asks Lenis to scroll to it.
+     * Resolves the target element by ID and asks Lenis to scroll to it.
      */
     function scrollToHash() {
-      const id     = window.location.hash.slice(1);
-      const target = document.getElementById(id);
+      const target = document.getElementById(hashId);
       if (target) {
         lenis.scrollTo(target, { offset: -50, duration: 1.5 });
       }
