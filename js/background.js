@@ -23,6 +23,7 @@
   let loadedCount = 0;
   let currentFrame = 0;
   let targetFrame = 0;
+  let lastRenderedIdx = -1;
 
   // ── Helpers ────────────────────────────────────────────────────────────
 
@@ -45,6 +46,7 @@
     ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+    lastRenderedIdx = -1; // Force redraw on resize
     renderFrame(currentFrame);
   }
 
@@ -54,6 +56,8 @@
    */
   function renderFrame(frameIndex) {
     const idx = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(frameIndex)));
+    if (idx === lastRenderedIdx) return; // Skip if we already rendered this exact frame
+
     const img = images[idx];
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
@@ -80,6 +84,7 @@
     }
 
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
+    lastRenderedIdx = idx;
   }
 
   /** Maps the current scroll position to a frame index [0, TOTAL_FRAMES-1]. */
@@ -128,25 +133,38 @@
 
     function loadRestSequentially() {
       let currentIndex = 1;
-      const loadNext = () => {
+      const BATCH_SIZE = 8; // Load multiple frames at once to utilize network better
+      
+      const loadBatch = () => {
         if (currentIndex >= TOTAL_FRAMES) return;
         
-        const img = images[currentIndex];
-        img.onload = img.onerror = () => {
-          loadedCount++;
-          currentIndex++;
-          // Small delay to yield to main thread and network, avoiding lag
-          setTimeout(loadNext, 10);
-        };
-        img.src = getFrameUrl(currentIndex + 1);
+        let loadedInBatch = 0;
+        const currentBatchSize = Math.min(BATCH_SIZE, TOTAL_FRAMES - currentIndex);
+        const startIndex = currentIndex;
+        
+        for (let i = 0; i < currentBatchSize; i++) {
+          const imgIndex = startIndex + i;
+          const img = images[imgIndex];
+          
+          img.onload = img.onerror = () => {
+            loadedCount++;
+            loadedInBatch++;
+            
+            if (loadedInBatch === currentBatchSize) {
+              currentIndex += currentBatchSize;
+              setTimeout(loadBatch, 5); // Small delay to yield to main thread
+            }
+          };
+          img.src = getFrameUrl(imgIndex + 1);
+        }
       };
-      loadNext();
+      loadBatch();
     }
   }
 
   // ── Init ───────────────────────────────────────────────────────────────
   window.addEventListener('resize', resizeCanvas, { passive: true });
-  window.addEventListener('scroll', updateTargetFrame, { passive: true });
+  // Removed redundant scroll listener as updateTargetFrame is called in tick()
 
   resizeCanvas();
   preloadImages();
