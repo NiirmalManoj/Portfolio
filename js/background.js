@@ -103,8 +103,11 @@
     const diff = targetFrame - currentFrame;
     if (Math.abs(diff) > 0.001) {
       currentFrame += diff * LERP_FACTOR;
-      renderFrame(currentFrame);
     }
+    // Always attempt to render. If the image just finished loading in the background, 
+    // it will be caught here and drawn, preventing the animation from getting "stuck".
+    // The `lastRenderedIdx` check inside renderFrame ensures this is highly efficient.
+    renderFrame(currentFrame);
     requestAnimationFrame(tick);
   }
 
