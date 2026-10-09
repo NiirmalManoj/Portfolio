@@ -84,7 +84,7 @@
 
   /** Maps the current scroll position to a frame index [0, TOTAL_FRAMES-1]. */
   function updateTargetFrame() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollTop = window.lenis ? window.lenis.scroll : (window.scrollY || document.documentElement.scrollTop);
     const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     if (maxScroll <= 0) return;
 

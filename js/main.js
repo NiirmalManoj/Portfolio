@@ -8,7 +8,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ── Lenis smooth-scroll ──────────────────────────────────────────────────
-  const lenis = new Lenis({
+  window.lenis = new Lenis({
     duration:           1.2,
     easing:             (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation:        'vertical',
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /** Drives the Lenis RAF loop. */
   function raf(time) {
-    lenis.raf(time);
+    window.lenis.raf(time);
     requestAnimationFrame(raf);
   }
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function scrollToHash() {
       const target = document.getElementById(hashId);
       if (target) {
-        lenis.scrollTo(target, { offset: -50, duration: 1.5 });
+        window.lenis.scrollTo(target, { offset: -50, duration: 1.5 });
       }
     }
 
